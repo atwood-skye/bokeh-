@@ -1,2 +1,4 @@
 <%= image_tag @image.picture.url(:medium) %>
 <h4><%= link_to @owner.username, user_path(@owner) %> | <%= @image.caption %></h4>
+<hr>
+<%= link_to "Comment on this image", new_image_comment_path(@image) %>
