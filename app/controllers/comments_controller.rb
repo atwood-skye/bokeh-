@@ -1,24 +1,27 @@
 class CommentsController < ApplicationController
   def new
+    @user = User.find(current_user.id)
     @image = Image.find(params[:image_id])
     @comment = @image.comments.new
   end
 
   def create
+    @user = User.find(current_user.id)
     @image = Image.find(params[:image_id])
-    @comment = @image.comments.new(comment_params)
-    @comment.owner_id = current_user.id
+    @comment = @image.comments.new( comment_params )
+    @comment.user_id = @user.id
     if @comment.save
-      binding.pry
-      flash[:notice] = "Your comment was saved"
-      redirect_to image_path(current_user, @image)
+      flash[:notice] = "Your comment has been posted!"
+      redirect_to image_path(@image)
     else
-      flash[:alert] = "There was a problem uploading your comment. Please try again."
+      flash[:alert] = "There was a problem uploading your photo. Please try again."
       render :new
     end
   end
-  private
+
+private
   def comment_params
     params.require(:comment).permit(:content)
+
   end
 end
